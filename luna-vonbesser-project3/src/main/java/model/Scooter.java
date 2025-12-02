@@ -1,6 +1,11 @@
 package model;
 
 // this is the scooter model class - it holds all the data for an e-scooter
+import java.util.ArrayList;
+import java.util.List;
+
+import data.observers.ScooterObserver;
+
 public class Scooter {
 
     private int id;
@@ -18,9 +23,27 @@ public class Scooter {
     private double brakeWearHours;   // how many hours on these brakes
     private String lastKnownLocation;  // gps coordinates maybe
 
+    // observer list
+    private final List<ScooterObserver> observers = new ArrayList<>();
+
     // empty constructor - sometimes frameworks need this
     public Scooter() {
         // nothing to do here really
+    }
+
+    // observer pattern methods
+    public void addObserver(ScooterObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(ScooterObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (ScooterObserver observer : observers) {
+            observer.onScooterStateChanged(this);
+        }
     }
 
     // builder pattern
@@ -175,6 +198,7 @@ public class Scooter {
 
     public void setCurrentCharge(int currentCharge) {
         this.currentCharge = currentCharge;
+        notifyObservers();
     }
 
     public String getStatus() {
@@ -183,6 +207,7 @@ public class Scooter {
 
     public void setStatus(String status) {
         this.status = status;
+        notifyObservers();
     }
 
     public int getSponsorId() {
@@ -215,6 +240,7 @@ public class Scooter {
 
     public void setTireWearHours(double tireWearHours) {
         this.tireWearHours = tireWearHours;
+        notifyObservers();
     }
 
     public double getBrakeWearHours() {
@@ -223,6 +249,7 @@ public class Scooter {
 
     public void setBrakeWearHours(double brakeWearHours) {
         this.brakeWearHours = brakeWearHours;
+        notifyObservers();
     }
 
     public String getLastKnownLocation() {

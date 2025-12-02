@@ -1,10 +1,16 @@
 package data.dao;
 
-import model.Scooter;
-import data.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
+import data.DataSource;
+import model.Scooter;
 
 // actual implementation that talks to the database for scooters
 public class ScooterDAOImp implements ScooterDAO {
@@ -149,13 +155,12 @@ public class ScooterDAOImp implements ScooterDAO {
         
         // build the scooter
         Scooter scooter = builder.build();
-        
         // set the id separately (not through builder since it comes from db)
         scooter.setId(rs.getInt("id"));
-        
-        // also set last_maintenance_date if we had it in our Scooter class
-        // but our Scooter class doesn't have that field
-        
+
+        // Register MaintenanceObserver for maintenance alerts
+        scooter.addObserver(new data.observers.MaintenanceObserver());
+
         return scooter;
     }
     
