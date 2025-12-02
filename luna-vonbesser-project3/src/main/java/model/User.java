@@ -1,9 +1,10 @@
 package model;
 
-import strategy.CreditStrategyInterface;
+import business.strategies.CreditStrategyInterface;
 import java.sql.Timestamp;
 
 public class User {
+
     private int id;
     private String email;
     private String password;
@@ -30,18 +31,74 @@ public class User {
         return creditStrategy != null ? creditStrategy.calculateCredit(this) : 0.0;
     }
 
-    // getters and Setters (only showing key ones)
-    public int getId() { return id; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-    public String getName() { return name; }
-    public String getUserType() { return userType; }
-    public double getCreditsBalance() { return creditsBalance; }
-    public void setCreditsBalance(double balance) { this.creditsBalance = balance; }
-    public void setCreditStrategy(CreditStrategyInterface strategy) { this.creditStrategy = strategy; }
+    // getters and setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public double getCreditsBalance() {
+        return creditsBalance;
+    }
+
+    public void setCreditsBalance(double creditsBalance) {
+        this.creditsBalance = creditsBalance;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public CreditStrategyInterface getCreditStrategy() {
+        return creditStrategy;
+    }
+
+    public void setCreditStrategy(CreditStrategyInterface creditStrategy) {
+        this.creditStrategy = creditStrategy;
+    }
 
     // builder Pattern
     public static class UserBuilder {
+
         private int id;
         private String email;
         private String password;
@@ -57,11 +114,30 @@ public class User {
             this.name = name;
         }
 
-        public UserBuilder id(int id) { this.id = id; return this; }
-        public UserBuilder userType(String type) { this.userType = type; return this; }
-        public UserBuilder creditsBalance(double balance) { this.creditsBalance = balance; return this; }
-        public UserBuilder createdAt(Timestamp time) { this.createdAt = time; return this; }
-        public UserBuilder creditStrategy(CreditStrategyInterface strategy) { this.creditStrategy = strategy; return this; }
+        public UserBuilder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder userType(String type) {
+            this.userType = type;
+            return this;
+        }
+
+        public UserBuilder creditsBalance(double balance) {
+            this.creditsBalance = balance;
+            return this;
+        }
+
+        public UserBuilder createdAt(Timestamp time) {
+            this.createdAt = time;
+            return this;
+        }
+
+        public UserBuilder creditStrategy(CreditStrategyInterface strategy) {
+            this.creditStrategy = strategy;
+            return this;
+        }
 
         public User build() {
             return new User(this);
@@ -69,6 +145,11 @@ public class User {
     }
 
     // additional helper methods
-    public boolean isSponsor() { return "SPONSOR".equals(userType); }
-    public boolean isMaintainer() { return "MAINTAINER".equals(userType); }
+    public boolean isSponsor() {
+        return "SPONSOR".equals(userType);
+    }
+
+    public boolean isMaintainer() {
+        return "MAINTAINER".equals(userType);
+    }
 }

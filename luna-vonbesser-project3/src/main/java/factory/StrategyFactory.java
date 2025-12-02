@@ -1,4 +1,8 @@
-package strategy;
+package factory;
+
+import business.strategies.CreditStrategyInterface;
+import business.strategies.MaintainerCreditStrategy;
+import business.strategies.SponsorCreditStrategy;
 
 public class StrategyFactory {
 

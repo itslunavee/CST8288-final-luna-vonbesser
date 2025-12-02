@@ -1,4 +1,4 @@
-package strategy;
+package business.strategies;
 
 import model.User;
 
