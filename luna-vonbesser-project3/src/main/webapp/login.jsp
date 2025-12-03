@@ -34,7 +34,7 @@
     </header>
     <main>
         <h2>Login</h2>
-        <form action="controller" method="post">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="login" />
             <label>Email:</label><input type="text" name="email" /><br/>
             <label>Password:</label><input type="password" name="password" /><br/>
