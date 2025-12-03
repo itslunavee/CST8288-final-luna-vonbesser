@@ -112,13 +112,13 @@
         
         <% if (message != null) { %>
             <div class="card success">
-                <p>✅ <%= message %></p>
+                <p>? <%= message %></p>
             </div>
         <% } %>
         
         <% if (error != null) { %>
             <div class="card overdue">
-                <p>❌ <%= error %></p>
+                <p>? <%= error %></p>
             </div>
         <% } %>
         
@@ -149,12 +149,12 @@
             
             <% if (isOverdue) { %>
                 <div class="info-box">
-                    <p>⚠️ <strong>your account is overdue!</strong></p>
+                    <p>?? <strong>your account is overdue!</strong></p>
                     <p>please make a payment immediately to avoid account suspension.</p>
                 </div>
             <% } else if (unpaid > 0) { %>
                 <div class="info-box">
-                    <p>📅 <strong>payment reminder</strong></p>
+                    <p>? <strong>payment reminder</strong></p>
                     <p>please pay your balance of <%= currency.format(unpaid) %> by <%= dueDate %>.</p>
                 </div>
             <% } %>
@@ -164,8 +164,9 @@
         <div class="card">
             <h3>make a payment</h3>
             
-            <form action="billing" method="post">
-                <input type="hidden" name="action" value="pay">
+            <form action="controller" method="post">
+                <input type="hidden" name="command" value="billing" />
+                <input type="hidden" name="action" value="pay" />
                 
                 <label>amount to pay:</label><br>
                 <input type="number" name="amount" step="0.01" min="0.01" 
@@ -199,8 +200,9 @@
                 </div>
             <% } %>
             
-            <form action="billing" method="post">
-                <input type="hidden" name="action" value="estimate">
+            <form action="controller" method="post">
+                <input type="hidden" name="command" value="billing" />
+                <input type="hidden" name="action" value="estimate" />
                 
                 <label>estimated distance (km):</label><br>
                 <input type="number" name="distance" step="0.1" min="0.1" value="2.5" required><br>
@@ -213,9 +215,9 @@
             
             <p style="font-size: 0.9em; color: #666; margin-top: 15px;">
                 <strong>how costs are calculated:</strong><br>
-                • $0.25 per kilometer<br>
-                • $0.10 per minute away from station<br>
-                • 10% discount on trips over $5.00
+                ? $0.25 per kilometer<br>
+                ? $0.10 per minute away from station<br>
+                ? 10% discount on trips over $5.00
             </p>
         </div>
         
