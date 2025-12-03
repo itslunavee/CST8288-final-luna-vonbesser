@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Login</title>
@@ -16,6 +17,8 @@
         }
         main {
             padding: 2rem;
+            max-width: 400px;
+            margin: 0 auto;
         }
         footer {
             background-color: #333;
@@ -26,6 +29,41 @@
             bottom: 0;
             width: 100%;
         }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .error {
+            color: red;
+            background-color: #ffe6e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .message {
+            color: green;
+            background-color: #e6ffe6;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -33,13 +71,41 @@
         <h1>Login Page</h1>
     </header>
     <main>
-        <h2>Login</h2>
+        <h2>Login to Your Account</h2>
+        
+        <%-- Display error messages --%>
+        <% if (request.getAttribute("error") != null) { %>
+            <div class="error">
+                <%= request.getAttribute("error") %>
+            </div>
+        <% } %>
+        
+        <%-- Display success messages --%>
+        <% if (request.getAttribute("message") != null) { %>
+            <div class="message">
+                <%= request.getAttribute("message") %>
+            </div>
+        <% } %>
+        
         <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="login" />
-            <label>Email:</label><input type="text" name="email" /><br/>
-            <label>Password:</label><input type="password" name="password" /><br/>
+            
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" required />
+            </div>
+            
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required />
+            </div>
+            
             <button type="submit">Login</button>
         </form>
+        
+        <p style="text-align: center; margin-top: 15px;">
+            Don't have an account? <a href="register.jsp">Register here</a>
+        </p>
     </main>
     <footer>
         <p>&copy; 2025 Luna Vonbesser Project</p>

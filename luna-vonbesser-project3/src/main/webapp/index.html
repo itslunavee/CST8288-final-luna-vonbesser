@@ -34,14 +34,17 @@
     </header>
     <main>
         <h2>Login or Register</h2>
-        <form action="login.jsp" method="get">
-            <button type="submit">Login</button>
-        </form>
-        <hr/>
-        <form action="register.jsp" method="post">
-            <input type="hidden" name="command" value="register" />
-            <button type="submit">Register</button>
-        </form>
+        <div class="button-container">
+            <form action="controller" method="get" style="display: inline;">
+                <input type="hidden" name="command" value="login" />
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            
+            <form action="controller" method="post" style="display: inline;">
+                <input type="hidden" name="command" value="register" />
+                <button type="submit">Register</button>
+            </form>
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Luna Vonbesser Project</p>

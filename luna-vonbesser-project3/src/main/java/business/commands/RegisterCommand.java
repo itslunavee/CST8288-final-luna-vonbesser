@@ -23,7 +23,8 @@ public class RegisterCommand implements CommandInterface {
             // get form parameters
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            String name = request.getParameter("name");
+            String confirmPassword = request.getParameter("confirmPassword");
+            String name = request.getParameter("name"); // This is missing in your form!
             String userType = request.getParameter("userType");
 
             // basic validation
@@ -37,6 +38,18 @@ public class RegisterCommand implements CommandInterface {
                 return "register.jsp";
             }
 
+            // Check password confirmation
+            if (!password.equals(confirmPassword)) {
+                request.setAttribute("error", "passwords do not match");
+                return "register.jsp";
+            }
+
+            // Check if name is provided
+            if (name == null || name.trim().isEmpty()) {
+                request.setAttribute("error", "name is required");
+                return "register.jsp";
+            }
+
             // create user using factory pattern
             User newUser = UserFactory.createUser(email, password, name, userType);
 
@@ -44,9 +57,11 @@ public class RegisterCommand implements CommandInterface {
             boolean success = userService.registerUser(newUser);
 
             if (success) {
-                request.setAttribute("message", "Registration successful! Please login.");
-                response.sendRedirect("login.jsp");
-                return null; // response.sendRedirect handles the redirection
+                // Set success message in session so it persists after redirect
+                request.getSession().setAttribute("message", "Registration successful! Please login.");
+                // Use redirect instead of forward
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return null; // Important: return null when using sendRedirect
             } else {
                 request.setAttribute("error", "Registration failed - email might already exist");
                 return "register.jsp";

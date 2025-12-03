@@ -61,17 +61,20 @@ public class FrontController extends HttpServlet {
             userType = (String) session.getAttribute("userType");
         }
 
-        // if not logged in, forward to login/register page
-        if (session == null || session.getAttribute("userId") == null) {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-
         // get the command parameter from the request
         String commandName = request.getParameter("command");
 
         // if no command specified, show home page based on role
+        // BUT ONLY if user is already logged in
         if (commandName == null || commandName.trim().isEmpty() || "home".equals(commandName)) {
+            // Check if user is logged in
+            if (session == null || session.getAttribute("userId") == null) {
+                // NOT logged in - redirect back to index.html
+                response.sendRedirect("index.html");
+                return;
+            }
+            
+            // User IS logged in - show appropriate home page based on role
             if ("MAINTAINER".equalsIgnoreCase(userType)) {
                 request.getRequestDispatcher("home_maintainer.jsp").forward(request, response);
             } else if ("SPONSOR".equalsIgnoreCase(userType)) {
@@ -96,6 +99,11 @@ public class FrontController extends HttpServlet {
         try {
             // execute the command and get the next page
             String nextPage = command.execute(request, response);
+
+            // If execute() returns null, it means it already handled the response
+            if (nextPage == null) {
+                return; // Command already sent redirect or committed response
+            }
 
             // forward to the next page
             request.getRequestDispatcher(nextPage).forward(request, response);
