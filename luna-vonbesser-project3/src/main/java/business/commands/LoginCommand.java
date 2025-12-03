@@ -1,16 +1,16 @@
 package business.commands;
 
 import business.AuthService;
-import model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.User;
 
 // this is a concrete command for handling user login
 // it encapsulates all the login logic in one object
 public class LoginCommand implements CommandInterface{
 
-    private AuthService authService;
+    private final AuthService authService;
 
     public LoginCommand() {
         // create the service we need
@@ -49,8 +49,15 @@ public class LoginCommand implements CommandInterface{
         // welcome message
         request.setAttribute("message", "welcome back, " + user.getName() + "!");
 
-        // go to dashboard
-        return "dashboard.jsp";
+        // go to role-specific home page
+        String userType = user.getUserType();
+        if ("MAINTAINER".equalsIgnoreCase(userType)) {
+            return "home_maintainer.jsp";
+        } else if ("SPONSOR".equalsIgnoreCase(userType)) {
+            return "home_sponsor.jsp";
+        } else {
+            return "home_user.jsp";
+        }
     }
 
     @Override
