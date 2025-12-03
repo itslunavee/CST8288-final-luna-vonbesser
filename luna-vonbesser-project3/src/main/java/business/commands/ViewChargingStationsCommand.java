@@ -8,8 +8,8 @@ import data.dao.ChargingStationDAO;
 import data.dao.ChargingStationDAOImp;
 import data.dao.ScooterDAO;
 import data.dao.ScooterDAOImp;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import model.ChargingStation;
 import model.Scooter;
 

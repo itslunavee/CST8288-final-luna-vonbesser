@@ -5,14 +5,14 @@ import java.util.Map;
 
 import data.dao.MaintenanceDAO;
 import data.dao.MaintenanceDAOImp;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class ViewMaintenanceAlertsCommand implements CommandInterface {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         MaintenanceDAO maintenanceDao = new MaintenanceDAOImp();
-        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        javax.servlet.http.HttpSession session = request.getSession(false);
         int maintainerId = (int) session.getAttribute("userId");
         List<Map<String, Object>> alerts = maintenanceDao.getMaintenanceAlertsByMaintainer(maintainerId);
         request.setAttribute("alerts", alerts);

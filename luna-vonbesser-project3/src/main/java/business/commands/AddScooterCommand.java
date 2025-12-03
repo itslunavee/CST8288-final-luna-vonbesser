@@ -2,9 +2,9 @@ package business.commands;
 
 import business.ScooterService;
 import model.Scooter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 // this command handles adding a new scooter (for sponsors only)
 public class AddScooterCommand implements CommandInterface {

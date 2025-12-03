@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import business.UserService;
 import factory.UserFactory;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import model.User;
 
 // this is a concrete command for handling user registration
