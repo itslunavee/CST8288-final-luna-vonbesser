@@ -33,6 +33,9 @@ public class FrontController extends HttpServlet {
         commands.put("logout", new business.commands.LogoutCommand());
         commands.put("billing", new business.commands.BillingCommand());
         commands.put("viewScooters", new business.commands.ViewScootersCommand());
+        commands.put("viewChargingStations", new business.commands.ViewChargingStationsCommand());
+        commands.put("viewMaintenanceAlerts", new business.commands.ViewMaintenanceAlertsCommand());
+        commands.put("scheduleMaintenance", new business.commands.ScheduleMaintenanceCommand());
         // add more commands here as needed
     }
 
