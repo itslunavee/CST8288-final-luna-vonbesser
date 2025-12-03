@@ -74,7 +74,7 @@
     </dependencies>
     
     <build>
-        <finalName>Group1_Final_Project</finalName>
+        <finalName>luna-final-project</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
