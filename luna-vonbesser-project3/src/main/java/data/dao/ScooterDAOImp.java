@@ -255,4 +255,21 @@ public class ScooterDAOImp implements ScooterDAO {
         
         return false;
     }
+
+    @Override
+    public Scooter getScooterById(int scooterId) {
+        String sql = "SELECT * FROM E_Scooters WHERE id = ?";
+        try (Connection conn = DataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, scooterId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return createScooterFromResultSet(rs);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("error getting scooter by id: " + e.getMessage());
+        }
+        return null;
+    }
 }

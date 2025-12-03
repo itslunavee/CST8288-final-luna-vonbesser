@@ -1,7 +1,8 @@
 package data.dao;
 
-import model.Scooter;
 import java.util.List;
+
+import model.Scooter;
 
 // interface for scooter data access operations
 public interface ScooterDAO {
@@ -17,6 +18,9 @@ public interface ScooterDAO {
     
     // get a scooter by its vehicle number (unique identifier)
     Scooter getScooterByVehicleNumber(String vehicleNumber);
+    
+    // get scooter by id
+    Scooter getScooterById(int scooterId);
     
     // update an existing scooter
     boolean updateScooter(Scooter scooter);

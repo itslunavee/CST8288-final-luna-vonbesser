@@ -1,24 +1,25 @@
 package business;
 
-import model.Scooter;
-import data.dao.ScooterDAO;
-import data.dao.ScooterDAOImp;
+import java.util.List;
+
 import data.dao.MaintenanceDAO;
 import data.dao.MaintenanceDAOImp;
-import com.cesc.business.observer.MaintenanceAlertSystem;
-import java.util.List;
+import data.dao.ScooterDAO;
+import data.dao.ScooterDAOImp;
+import data.observers.MaintenanceObserver;
+import model.Scooter;
 
 // this service handles scooter-related business logic
 public class ScooterService {
 
     private ScooterDAO scooterDao;
     private MaintenanceDAO maintenanceDao;
-    private MaintenanceAlertSystem alertSystem;
+    private MaintenanceObserver alertSystem;
 
     public ScooterService() {
         this.scooterDao = new ScooterDAOImp();
         this.maintenanceDao = new MaintenanceDAOImp();
-        this.alertSystem = MaintenanceAlertSystem.getInstance();
+        this.alertSystem = new MaintenanceObserver();
     }
 
     // add a new scooter
@@ -45,15 +46,8 @@ public class ScooterService {
             boolean success = scooterDao.addScooter(scooter);
 
             if (success) {
-                // notify observers about new scooter
-                alertSystem.triggerNewScooterAlert(
-                        scooter.getId(),
-                        scooter.getVehicleNumber(),
-                        scooter.getSponsorId()
-                );
-
-                // check if scooter needs maintenance alerts
-                checkMaintenanceAlerts(scooter);
+                // observer will be notified on state changes
+                scooter.setStatus(scooter.getStatus());
             }
 
             return success;
@@ -70,9 +64,9 @@ public class ScooterService {
         try {
             List<Scooter> scooters = scooterDao.getAllScooters();
 
-            // check each scooter for maintenance needs
+            // add observer to each scooter
             for (Scooter scooter : scooters) {
-                checkMaintenanceAlerts(scooter);
+                scooter.addObserver(alertSystem);
             }
 
             return scooters;
@@ -98,8 +92,7 @@ public class ScooterService {
             boolean success = scooterDao.updateScooter(scooter);
 
             if (success) {
-                // check for maintenance alerts after update
-                checkMaintenanceAlerts(scooter);
+                scooter.setStatus(scooter.getStatus());
             }
 
             return success;
@@ -120,56 +113,7 @@ public class ScooterService {
     }
 
     // check scooter for maintenance needs and trigger alerts
-    private void checkMaintenanceAlerts(Scooter scooter) {
-        if (scooter == null) {
-            return;
-        }
-
-        // check battery
-        if (scooter.getCurrentCharge() < 20) {
-            alertSystem.triggerBatteryAlert(scooter.getId(), scooter.getCurrentCharge());
-
-            // also create database record
-            maintenanceDao.createMaintenanceAlert(
-                    scooter.getId(),
-                    "BATTERY",
-                    "Low battery: " + scooter.getCurrentCharge() + "%",
-                    scooter.getCurrentCharge() < 10 ? "HIGH" : "MEDIUM"
-            );
-        }
-
-        // check tire wear
-        if (scooter.getTireWearHours() > 50) {
-            alertSystem.triggerMaintenanceAlert(
-                    scooter.getId(),
-                    "tires",
-                    scooter.getTireWearHours()
-            );
-
-            maintenanceDao.createMaintenanceAlert(
-                    scooter.getId(),
-                    "TIRES",
-                    "Tire wear: " + scooter.getTireWearHours() + " hours",
-                    scooter.getTireWearHours() > 70 ? "HIGH" : "MEDIUM"
-            );
-        }
-
-        // check brake wear
-        if (scooter.getBrakeWearHours() > 30) {
-            alertSystem.triggerMaintenanceAlert(
-                    scooter.getId(),
-                    "brakes",
-                    scooter.getBrakeWearHours()
-            );
-
-            maintenanceDao.createMaintenanceAlert(
-                    scooter.getId(),
-                    "BRAKES",
-                    "Brake wear: " + scooter.getBrakeWearHours() + " hours",
-                    scooter.getBrakeWearHours() > 45 ? "HIGH" : "MEDIUM"
-            );
-        }
-    }
+    // observer pattern now handles maintenance alerts, so this method is no longer needed
 
     // simulate scooter usage (for testing/demo)
     public void simulateUsage(int scooterId, double hours) {
@@ -187,9 +131,6 @@ public class ScooterService {
 
                 // save changes
                 scooterDao.updateScooter(scooter);
-
-                // check for alerts
-                checkMaintenanceAlerts(scooter);
 
                 System.out.println("simulated " + hours + " hours of usage for scooter #" + scooterId);
             }
