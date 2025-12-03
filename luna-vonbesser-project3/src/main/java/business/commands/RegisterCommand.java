@@ -1,15 +1,17 @@
 package business.commands;
 
+import java.io.IOException;
+
 import business.UserService;
-import model.User;
 import factory.UserFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 // this is a concrete command for handling user registration
 public class RegisterCommand implements CommandInterface {
 
-    private UserService userService;
+    private final UserService userService;
 
     public RegisterCommand() {
         this.userService = new UserService();
@@ -17,36 +19,40 @@ public class RegisterCommand implements CommandInterface {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        // get form parameters
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String name = request.getParameter("name");
-        String userType = request.getParameter("userType");
+        try {
+            // get form parameters
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String name = request.getParameter("name");
+            String userType = request.getParameter("userType");
 
-        // basic validation
-        if (email == null || email.trim().isEmpty()) {
-            request.setAttribute("error", "email is required");
-            return "register.jsp";
-        }
+            // basic validation
+            if (email == null || email.trim().isEmpty()) {
+                request.setAttribute("error", "email is required");
+                return "register.jsp";
+            }
 
-        if (password == null || password.length() < 6) {
-            request.setAttribute("error", "password must be at least 6 characters");
-            return "register.jsp";
-        }
+            if (password == null || password.length() < 6) {
+                request.setAttribute("error", "password must be at least 6 characters");
+                return "register.jsp";
+            }
 
-        // check if user already exists (we'd need a method for this in userService)
-        // for now, we'll skip this check
-        // create user using factory pattern
-        User newUser = UserFactory.createUser(email, password, name, userType);
+            // create user using factory pattern
+            User newUser = UserFactory.createUser(email, password, name, userType);
 
-        // register the user
-        boolean success = userService.registerUser(newUser);
+            // register the user
+            boolean success = userService.registerUser(newUser);
 
-        if (success) {
-            request.setAttribute("message", "registration successful! please login.");
-            return "login.jsp";
-        } else {
-            request.setAttribute("error", "registration failed - email might already exist");
+            if (success) {
+                request.setAttribute("message", "Registration successful! Please login.");
+                response.sendRedirect("login.jsp");
+                return null; // response.sendRedirect handles the redirection
+            } else {
+                request.setAttribute("error", "Registration failed - email might already exist");
+                return "register.jsp";
+            }
+        } catch (IOException e) {
+            request.setAttribute("error", "An unexpected error occurred. Please try again.");
             return "register.jsp";
         }
     }
