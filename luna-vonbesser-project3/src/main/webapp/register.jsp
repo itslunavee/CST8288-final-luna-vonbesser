@@ -39,6 +39,12 @@
             <label>Email:</label><input type="text" name="email" /><br/>
             <label>Password:</label><input type="password" name="password" /><br/>
             <label>Confirm Password:</label><input type="password" name="confirmPassword" /><br/>
+            <label>User Type:</label>
+            <select name="userType">
+                <option value="USER">User</option>
+                <option value="MAINTAINER">Maintainer</option>
+                <option value="SPONSOR">Sponsor</option>
+            </select><br/>
             <button type="submit">Register</button>
         </form>
     </main>
