@@ -1,11 +1,15 @@
 package data.dao;
 
-import data.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import data.DataSource;
 
 public class MaintenanceDAOImp implements MaintenanceDAO {
 
@@ -125,23 +129,18 @@ public class MaintenanceDAOImp implements MaintenanceDAO {
         return false;
     }
 
-    // new method to assign a maintenance task to a maintainer
+    @Override
     public boolean assignMaintenanceTask(int alertId, int maintainerId) {
         String sql = "UPDATE Maintenance_Alerts SET assigned_to = ?, status = 'IN_PROGRESS' WHERE id = ?";
-
-        try (Connection conn = DataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (java.sql.Connection conn = data.DataSource.getConnection();
+             java.sql.PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maintainerId);
             stmt.setInt(2, alertId);
-
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
-
-        } catch (SQLException e) {
+        } catch (java.sql.SQLException e) {
             System.err.println("error assigning maintenance task: " + e.getMessage());
-            e.printStackTrace();
         }
-
         return false;
     }
 

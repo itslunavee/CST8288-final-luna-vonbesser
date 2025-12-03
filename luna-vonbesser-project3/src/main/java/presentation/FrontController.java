@@ -51,12 +51,32 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // check if user is logged in
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        String userType = null;
+        if (session != null) {
+            userType = (String) session.getAttribute("userType");
+        }
+
+        // if not logged in, forward to login/register page
+        if (session == null || session.getAttribute("userId") == null) {
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+
         // get the command parameter from the request
         String commandName = request.getParameter("command");
 
-        // if no command specified, default to home
-        if (commandName == null || commandName.trim().isEmpty()) {
-            commandName = "home";
+        // if no command specified, show home page based on role
+        if (commandName == null || commandName.trim().isEmpty() || "home".equals(commandName)) {
+            if ("MAINTAINER".equalsIgnoreCase(userType)) {
+                request.getRequestDispatcher("home_maintainer.jsp").forward(request, response);
+            } else if ("SPONSOR".equalsIgnoreCase(userType)) {
+                request.getRequestDispatcher("home_sponsor.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("home_user.jsp").forward(request, response);
+            }
+            return;
         }
 
         // get the command object from our map

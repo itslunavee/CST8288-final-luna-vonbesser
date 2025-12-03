@@ -16,4 +16,7 @@ public interface MaintenanceDAO {
 
     // create a new maintenance alert
     boolean createMaintenanceAlert(int scooterId, String alertType, String description, String priority);
+
+    // assign a maintenance task to a maintainer
+    boolean assignMaintenanceTask(int alertId, int maintainerId);
 }
