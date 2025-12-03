@@ -34,11 +34,11 @@
     </header>
     <main>
         <h2>User Home</h2>
-        <form action="controller" method="post">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="billing" />
             <button type="submit">View Billing Report</button>
         </form>
-        <form action="controller" method="post">
+        <form action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="viewChargingStations" />
             <button type="submit">View Charging Stations</button>
         </form>

@@ -48,7 +48,7 @@
                     <td>${alert.createdDate}</td>
                     <td>${alert.resolvedDate}</td>
                     <td>
-                        <form action="controller" method="post">
+                        <form action="${pageContext.request.contextPath}/controller" method="post">
                             <input type="hidden" name="command" value="scheduleMaintenance" />
                             <input type="hidden" name="alertId" value="${alert.id}" />
                             <button type="submit">Schedule</button>

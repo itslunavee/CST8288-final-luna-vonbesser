@@ -42,7 +42,7 @@
                 <p>Failed to schedule maintenance task.</p>
             </c:otherwise>
         </c:choose>
-        <a href="controller?command=viewMaintenanceAlerts">Back to Alerts</a>
+        <a href="${pageContext.request.contextPath}/controller?command=viewMaintenanceAlerts">Back to Alerts</a>
     </main>
     <footer>
         <p>&copy; 2025 Luna Vonbesser Project</p>

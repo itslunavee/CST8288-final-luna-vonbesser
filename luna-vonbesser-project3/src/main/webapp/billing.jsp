@@ -229,7 +229,6 @@
             </ul>
         </div>
         
-        <p><a href="dashboard.jsp">← back to dashboard</a></p>
     </main>
     <footer>
         <p>&copy; 2025 Luna Vonbesser Project</p>
